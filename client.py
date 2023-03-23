@@ -38,8 +38,7 @@ def startClient(port):
             print("RSA hash signature:\n",hashSignature,"\n",sep="")
             
             inp_plus_signature= "{data};{signature}".format(data = inp_hex, signature = hashSignature)
-            print("Bruh:\n",inp_plus_signature.encode('utf-8'),"\n",sep="")
-            
+             
             aes_cypherText=met.easEncWhithKey(inp_plus_signature.encode('utf-8'),relationKey).hex()
             print("AES_cipher:\n",aes_cypherText,"\n",sep="")
                                          

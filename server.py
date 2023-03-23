@@ -47,6 +47,7 @@ def parseBuffer(message,serverPubKey,serverPrivateKey,clientPublicKey):
     print(aes_key.hex()) 
     ########################
     
-    aes_cypherText=bytearray.fromhex(pieces[0]) #rozbaleni dat do binarni podoby   
-    inp_plus_signature=met.easdecWhithKey(aes_cypherText,aes_key).decode('utf-8')
-    print(inp_plus_signature)
+    aes_cypherText=bytearray.fromhex(pieces[0]) #rozbaleni dat do binarni podoby  
+    print("\n\n",aes_cypherText) 
+    inp_plus_signature=(met.easdecWhithKey(aes_cypherText,aes_key)).decode('utf-8')
+    print("\n\n",inp_plus_signature)

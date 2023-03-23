@@ -22,12 +22,12 @@ def easGenKey(bytesNum=16):
     return get_random_bytes(bytesNum)
 
 def easEncWhithKey(message, key):
-    cipher = AES.new(key, AES.MODE_EAX)
+    cipher = AES.new(key, AES.MODE_CFB)
     return cipher.encrypt(message)
     
 
 def easdecWhithKey(message, key):
-    cipher = AES.new(key, AES.MODE_EAX)
+    cipher = AES.new(key, AES.MODE_CFB)
     return cipher.decrypt(message)
 
 
