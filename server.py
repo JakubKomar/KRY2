@@ -6,7 +6,6 @@ def startServer(port, ip = "127.0.0.1"):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((ip, port))
         s.listen()
-        print("Server ready...")
         while True:
             conn, addr = s.accept()
             with conn:

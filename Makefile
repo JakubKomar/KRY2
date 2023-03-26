@@ -32,4 +32,8 @@ clean_env:
 	rm -rf $(VENV)
 
 clean: clean_env
-	cd data && rm -rf download_data
+	if [ -d "cert" ]; then rm -r "cert"; fi  &\
+	rm -rf 222161.zip
+
+pack:
+	zip -r 222161.zip client.py server.py kry.py methods.py keyGen.py README doc.pdf
