@@ -1,9 +1,8 @@
 from Crypto.Cipher import PKCS1_OAEP,AES
 from Crypto.PublicKey import RSA
-from Crypto import Random
 from Crypto.Random import get_random_bytes
-from Crypto.Signature import pkcs1_15
-import Crypto.Hash.MD5 as MD5
+from Crypto.Hash import MD5
+from Crypto.Util.number import bytes_to_long,long_to_bytes
 
 def getRsaKeyFromFile(keyPath):
     return RSA.import_key(open(keyPath).read())
@@ -19,16 +18,27 @@ def rsaDecWhithKeyFile(ciphertext, key):
     plaintext = cipher.decrypt(ciphertext)
     return plaintext
 
-def rsaCreateSignature(hashObject, key):
-    cipher = pkcs1_15.new(key)
-    return cipher.sign(hash)
+def rsaSign(text,privateKey):
+    if len(text)>256:
+        raise Exception("blbě")
+    D=  bytes_to_long(text)
+    S=pow(D,privateKey.d, privateKey.n)
 
-def rsaVerifySignature(hashObject,signature, key):
-    try:
-        pkcs1_15.new(key).verify(hashObject, signature)
-        return True
-    except (ValueError, TypeError):
-        return False
+    return long_to_bytes(S)
+
+def rsaPading(text,target=214):
+    toBePad=target-len(text)
+    pading=get_random_bytes(toBePad)
+    res=text+pading
+    return res
+
+def rsaUnPading(text,textLen):
+    return text[:textLen]
+
+def rsaSignVer(text,publicKey):
+    S=  bytes_to_long(text)
+    res=pow(S,publicKey.e ,publicKey.n)
+    return long_to_bytes(res)
 
 def easGenKey(bytesNum=16):
     return get_random_bytes(bytesNum)

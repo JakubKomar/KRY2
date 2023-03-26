@@ -6,7 +6,7 @@ PYTHON = $(VENV)/bin/python3
 PIP = $(VENV)/bin/pip
 MAIN = kry.py
  
-.PHONY: all build run pack clean h update_req create_env clean_env
+.PHONY: all build run pack clean h help create_env clean_env
 
 all: build
 
@@ -15,25 +15,18 @@ build:create_env
 pack: clean
 	zip -r xkomar33.zip src/ doc/ tests/  Makefile 	
 
+help:h
 h:
-	@echo "make run"
-	@echo "       run main script"
-	@echo "make create_env"
-	@echo "       creates venv"
-	@echo "make update_req"
-	@echo "       updates requirements.txt"
-	@echo "make clean"
-	@echo "       cleans up downloaded files and venv"
+	@echo "make run - run main script"
+	@echo "make build - build venv and install libs"
+	@echo "make clean - cleans up venv"
 
-#run script
 run:
-	$(PYTHON) -m $(MAIN)
-
-update_req:
-	pip freeze > requirements.txt
+	$(PYTHON) $(MAIN) TYPE=$(TYPE) PORT=$(PORT)
 
 create_env:
-	python3 -m venv $(VENV)
+	python3 -m venv $(VENV) &\
+	$(PYTHON) -m pip install  -r requirements.txt
 
 clean_env:
 	rm -rf $(VENV)

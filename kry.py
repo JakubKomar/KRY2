@@ -5,6 +5,9 @@ import sys
 from server import startServer
 from client import startClient
 from keyGen import genNewKeys,genKeysForApk
+from os.path import exists,isdir
+from os import makedirs
+from pathlib import Path
 
 if __name__ == "__main__":
     mode="none"
@@ -15,9 +18,9 @@ if __name__ == "__main__":
         for index in range(1,len(args)):
             i=args[index]
             if i== "-h" or i=="--help":
-                print("Použití: TYPE=[c|s] PORT=\"port number\"")
+                print("Použití: [TYPE=[c|s] PORT=\"port number\" ] | -g | GEN=\"keyName\"")
                 exit(0)
-            elif i== "-g" or i=="--genKeys":
+            elif i== "GEN" or i=="--genKeys" or i=="-g":
                 genKeysForApk()
                 exit(0)
             else:
@@ -39,11 +42,24 @@ if __name__ == "__main__":
                 
         if port<0 or port>65535:
             raise Exception("Port služby je špatně zadán")
+        
+        if  not(exists(Path("cert/clientKey")) and\
+                exists(Path("cert/clientKeyPub"))and\
+                exists(Path("cert/serverKey"))and\
+                exists(Path("cert/serverKeyPub"))):
+            if not isdir(Path("cert")):
+                makedirs(Path("cert"))
+            print("someKeyMissing - generating new keys")
+            genKeysForApk()
+            
+                
+        if mode=="c":
+            startClient(port)
+        elif mode=="s":
+            startServer(port)
+        else:
+            raise Exception("Mód zpuštění je špatně zadán")
     except Exception as ex:
         print("Error:",ex)
-    if mode=="c":
-        startClient(port)
-    elif mode=="s":
-        startServer(port)
-    else:
-        raise Exception("Mód zpuštění je špatně zadán")
+        exit(-1)
+    
