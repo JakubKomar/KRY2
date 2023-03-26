@@ -34,7 +34,7 @@ def startClient(port):
 
             # todo MD5_padding 
                             
-            hashSignature= met.rsaEncWhithKeyFile(md5Hash.digest(),clientPrivateKey).hex()
+            hashSignature= met.rsaCreateSignature(md5Hash,clientPrivateKey).hex()
             print("RSA hash signature:\n",hashSignature,"\n",sep="")
             
             inp_plus_signature= "{data};{signature}".format(data = inp_hex, signature = hashSignature)
@@ -43,7 +43,7 @@ def startClient(port):
             print("AES_cipher:\n",aes_cypherText,"\n",sep="")
                                          
                              
-            rsa_aes_key= met.rsaEncWhithKeyFile(relationKey,serverPubKey).hex()
+            rsa_aes_key= met.rsaDecWhithKeyFile(relationKey,serverPubKey).hex()
             print("RSA_AES_key:\n",rsa_aes_key,"\n",sep="")
                   
             cypherText= "{cypherTextPlusSinatureHex};{cypherRelationKey};\004".format(cypherTextPlusSinatureHex = aes_cypherText, cypherRelationKey =rsa_aes_key )

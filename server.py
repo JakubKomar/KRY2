@@ -48,6 +48,22 @@ def parseBuffer(message,serverPubKey,serverPrivateKey,clientPublicKey):
     ########################
     
     aes_cypherText=bytearray.fromhex(pieces[0]) #rozbaleni dat do binarni podoby  
-    print("\n\n",aes_cypherText) 
+
     inp_plus_signature=(met.easdecWhithKey(aes_cypherText,aes_key)).decode('utf-8')
+    
     print("\n\n",inp_plus_signature)
+    
+    pieces2=inp_plus_signature.split(";")
+    print(pieces2)
+    if len(pieces2)<2:
+        raise Exception("Chybný formát zprávy")
+    plainText_b=bytearray.fromhex(pieces2[0])
+    plainText=plainText_b.decode('utf-8')
+    
+    hashSignatureRsa=bytearray.fromhex(pieces2[1])
+    print(hashSignatureRsa)
+    print(len(hashSignatureRsa))
+    print(met.rsaDecWhithKeyFile(hashSignatureRsa,clientPublicKey))
+    
+    md5HashCalc=met.md5CreateHash(plainText_b)
+    
