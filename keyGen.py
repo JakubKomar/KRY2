@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Project name: Implementace hybrydního šifrování
+autor: Bc. Jakub Komárek
+File description: Funkce na generování klíčů
+"""
+
 from Crypto.PublicKey import RSA
 
 def genNewKeys(fileName):

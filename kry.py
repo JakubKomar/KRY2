@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
-
-import sys
+# -*- coding: utf-8 -*-
+"""
+Project name: Implementace hybrydního šifrování
+autor: Bc. Jakub Komárek
+File description: Main funkce - parsuje argumenty a volá hlavní moduly programu
+"""
 
 from server import startServer
 from client import startClient
@@ -8,6 +12,8 @@ from keyGen import genNewKeys,genKeysForApk
 from os.path import exists,isdir
 from os import makedirs
 from pathlib import Path
+
+import sys
 
 if __name__ == "__main__":
     mode="none"

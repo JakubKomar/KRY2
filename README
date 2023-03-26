@@ -1,0 +1,13 @@
+# Project name: Implementace hybrydního šifrování
+# autor: Bc. Jakub Komárek
+
+klíče se vygenerují automaticky po prvním spuštění
+
+inicializace:
+  make
+
+použití: 
+  make run [TYPE=[c|s] PORT=\"port number\" ] | GEN=\"keyName\"
+
+vyžadované knihovny:
+  PyCryptodome>= 3.10.0 

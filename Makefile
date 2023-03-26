@@ -1,31 +1,26 @@
-# project:
-# autor: Bc. Jakub Komárek (xkomar33)
-# description:
+#Project name: Implementace hybrydního šifrování
+#autor: Bc. Jakub Komárek
+#File description: Implementace kryptografických metod
+
 VENV = venv
 PYTHON = $(VENV)/bin/python3
 PIP = $(VENV)/bin/pip
 MAIN = kry.py
  
-.PHONY: all build run pack clean h help create_env clean_env
+.PHONY: all build run pack clean  create_env clean_env
 
 all: build
 
 build:create_env
 
 pack: clean
-	zip -r xkomar33.zip src/ doc/ tests/  Makefile 	
-
-help:h
-h:
-	@echo "make run - run main script"
-	@echo "make build - build venv and install libs"
-	@echo "make clean - cleans up venv"
+	zip -r 222161.zip client.py server.py kry.py methods.py keyGen.py README doc.pdf Makefile requirements.txt
 
 run:
 	$(PYTHON) $(MAIN) TYPE=$(TYPE) PORT=$(PORT)
 
 create_env:
-	python3 -m venv $(VENV) &\
+	python3 -m venv $(VENV) 
 	$(PYTHON) -m pip install  -r requirements.txt
 
 clean_env:
@@ -34,6 +29,3 @@ clean_env:
 clean: clean_env
 	if [ -d "cert" ]; then rm -r "cert"; fi  &\
 	rm -rf 222161.zip
-
-pack:
-	zip -r 222161.zip client.py server.py kry.py methods.py keyGen.py README doc.pdf
