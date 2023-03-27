@@ -8,6 +8,7 @@ File description: Implementace serveru
 
 import socket
 import methods as met
+from Crypto.PublicKey import RSA
 
 def startServer(port, ip = "127.0.0.1"):
 
@@ -19,15 +20,19 @@ def startServer(port, ip = "127.0.0.1"):
             conn, addr = s.accept()
             with conn:
                 print(f"Client has joined: {addr}")
-                serverPubKey=met.getRsaKeyFromFile("cert/serverKeyPub") 
                 
+                serverPubKey=met.getRsaKeyFromFile("cert/serverKeyPub")               
                 print("RSA_public_key_sender=\n",serverPubKey.exportKey().decode('utf-8'),"\n",sep="")  
+                
                 serverPrivateKey=met.getRsaKeyFromFile("cert/serverKey")
                 print("RSA_private_key_sender=\n",serverPrivateKey.exportKey().decode('utf-8'),"\n",sep="")    
 
-                clientPublicKey=met.getRsaKeyFromFile("cert/clientKeyPub")      
-                print("RSA_public_key_receiver=\n",clientPublicKey.exportKey().decode('utf-8'),"\n",sep="") 
-                   
+                conn.sendall(serverPubKey.exportKey())
+                
+                clientPublicKey=RSA.importKey(conn.recv(1024))   # získání klíče na podpisy od klienta
+                    
+                print("RSA_public_key_receiver=\n",clientPublicKey.exportKey().decode('utf-8'),"\n",sep="")             
+                
                 buffer=""
                 while True:                   
                     data = conn.recv(1024)                                         
