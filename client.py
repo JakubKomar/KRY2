@@ -8,6 +8,9 @@ File description: Implementace klienta
 
 import socket 
 import methods as met
+from Crypto.PublicKey import RSA
+from os.path import exists
+from pathlib import Path
 
 def startClient(port,ip = "127.0.0.1" ):
 
@@ -19,9 +22,16 @@ def startClient(port,ip = "127.0.0.1" ):
         print("RSA_public_key_sender=\n",clientPubKey.exportKey().decode('utf-8'),"\n",sep="")  
         clientPrivateKey=met.getRsaKeyFromFile("cert/clientKey")
         print("RSA_private_key_sender=\n",clientPrivateKey.exportKey().decode('utf-8'),"\n",sep="")    
-        serverPubKey=met.getRsaKeyFromFile("cert/serverKeyPub")      
+        
+        if not(exists(Path("cert/serverKeyPub"))):# pokud nemám veřejný klíč serveru, tak mi ho server zašle
+            serverPubKey=RSA.importKey(client.recv(1024))                
+        else:
+            client.recv(1024)
+            serverPubKey=met.getRsaKeyFromFile("cert/serverKeyPub")
         print("RSA_public_key_receiver=\n",serverPubKey.exportKey().decode('utf-8'),"\n",sep="") 
         
+        client.sendall(clientPubKey.exportKey())
+       
         while True:
             print("----------------------------------------------------------------")
 
