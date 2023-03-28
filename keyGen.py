@@ -21,11 +21,7 @@ def genNewKeys(fileName):
     fd = open(fileName+"Pub", "wb")
     fd.write(public_key)
     fd.close()
-
-def genKeysForApk():
-    genNewKeys("cert/serverKey")
-    genNewKeys("cert/clientKey")
-
     
 if __name__ == "__main__":
-    genKeysForApk()
+    genNewKeys("cert/serverKey")
+    genNewKeys("cert/clientKey")
